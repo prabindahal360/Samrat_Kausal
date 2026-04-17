@@ -28,10 +28,10 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'unit_price' => 'required|numeric|min:0',
             'category' => 'nullable|string|max:255',
-            'is_active' => 'nullable|boolean',
+            'is_active' => 'nullable',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->boolean('is_active');
 
         Product::create($validated);
 
@@ -60,10 +60,10 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'unit_price' => 'required|numeric|min:0',
             'category' => 'nullable|string|max:255',
-            'is_active' => 'nullable|boolean',
+            'is_active' => 'nullable',
         ]);
 
-        $validated['is_active'] = $request->has('is_active');
+        $validated['is_active'] = $request->boolean('is_active');
 
         $product->update($validated);
 

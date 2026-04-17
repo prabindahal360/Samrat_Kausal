@@ -12,12 +12,12 @@ class CustomerAiService
         $customer->loadMissing('invoiceItems.product');
 
         $totalSpend = $customer->invoiceItems->sum(function ($item) {
-            return $item->quantity * $item->unit_price;
+            return (float) $item->quantity * (float) $item->unit_price;
         });
 
         $category = $this->categorizeCustomer($totalSpend);
         $discount = $this->getDiscountByCategory($category);
-        $recommendations = $this->recommendProducts($customer);
+        $recommendations = $this->recommendProducts($customer, $category);
 
         $customer->update([
             'total_spend' => $totalSpend,
@@ -35,11 +35,11 @@ class CustomerAiService
             return 'Low Value';
         }
 
-        if ($totalSpend < 200) {
+        if ($totalSpend < 300) {
             return 'Medium Value';
         }
 
-        if ($totalSpend < 500) {
+        if ($totalSpend < 800) {
             return 'High Value';
         }
 
@@ -57,7 +57,7 @@ class CustomerAiService
         };
     }
 
-    public function recommendProducts(Customer $customer): array
+    public function recommendProducts(Customer $customer, string $category): array
     {
         $customer->loadMissing('invoiceItems.product');
 
@@ -75,8 +75,7 @@ class CustomerAiService
             ->values()
             ->toArray();
 
-        $query = Product::query()
-            ->where('is_active', true);
+        $query = Product::query()->where('is_active', true);
 
         if (!empty($boughtCategories)) {
             $query->whereIn('category', $boughtCategories);
@@ -86,8 +85,19 @@ class CustomerAiService
             $query->whereNotIn('id', $boughtProductIds);
         }
 
-        return $query->orderBy('name')
-            ->take(5)
+        if ($category === 'Low Value') {
+            $query->orderBy('unit_price', 'asc');
+        } elseif ($category === 'Medium Value') {
+            $query->orderBy('unit_price', 'asc');
+        } elseif ($category === 'High Value') {
+            $query->orderBy('unit_price', 'desc');
+        } elseif ($category === 'VIP') {
+            $query->orderBy('unit_price', 'desc');
+        } else {
+            $query->orderBy('name');
+        }
+
+        return $query->take(5)
             ->get(['id', 'stock_code', 'name', 'category', 'unit_price'])
             ->map(function ($product) {
                 return [

@@ -20,9 +20,9 @@ class Customer extends Model
     ];
 
     protected $casts = [
-        'total_spend' => 'decimal:2',
         'recommended_products' => 'array',
         'last_recommendation_sent_at' => 'datetime',
+        'total_spend' => 'decimal:2',
     ];
 
     public function invoiceItems()
@@ -33,5 +33,10 @@ class Customer extends Model
     public function getFullNameAttribute()
     {
         return trim(($this->first_name ?? '') . ' ' . ($this->last_name ?? ''));
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

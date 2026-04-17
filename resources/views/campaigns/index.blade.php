@@ -6,7 +6,9 @@
 @section('content_header')
     <div class="d-flex justify-content-between">
         <h1>Campaigns</h1>
-        <a href="{{ route('campaigns.create') }}" class="btn btn-primary">Create Campaign</a>
+        <a href="{{ route('campaigns.create') }}" class="btn btn-primary">
+            Create Campaign
+        </a>
     </div>
 @stop
 
@@ -41,23 +43,37 @@
                                     <span class="badge bg-secondary">Inactive</span>
                                 @endif
                             </td>
-                            <td>{{ $campaign->sent_at ? $campaign->sent_at->format('Y-m-d H:i') : '-' }}</td>
+                            <td>
+                                {{ $campaign->sent_at ? $campaign->sent_at->format('Y-m-d H:i') : '-' }}
+                            </td>
                             <td>
                                 <a href="{{ route('campaigns.edit', $campaign->id) }}" class="btn btn-warning btn-sm">
                                     Edit
                                 </a>
 
+                                <a href="{{ route('campaigns.preview', $campaign->id) }}" class="btn btn-info btn-sm">
+                                    Preview
+                                </a>
+
+                                <a href="{{ route('campaigns.logs', $campaign->id) }}" class="btn btn-secondary btn-sm">
+                                    Logs
+                                </a>
+
                                 <form action="{{ route('campaigns.send', $campaign->id) }}" method="POST" class="d-inline"
                                       onsubmit="return confirm('Send this campaign now?')">
                                     @csrf
-                                    <button class="btn btn-success btn-sm">Send</button>
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        Send
+                                    </button>
                                 </form>
 
                                 <form action="{{ route('campaigns.destroy', $campaign->id) }}" method="POST" class="d-inline"
                                       onsubmit="return confirm('Delete this campaign?')">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="btn btn-danger btn-sm">Delete</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -76,6 +92,11 @@
 
     #campaignsTable td:last-child {
         white-space: nowrap;
+    }
+
+    #campaignsTable .btn {
+        margin-right: 4px;
+        margin-bottom: 4px;
     }
 </style>
 @stop

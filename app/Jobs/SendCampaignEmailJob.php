@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Mail\CampaignOfferMail;
 use App\Models\Campaign;
+use App\Models\CampaignLog;
 use App\Models\Customer;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,6 +35,35 @@ class SendCampaignEmailJob implements ShouldQueue
             return;
         }
 
-        Mail::to($customer->email)->send(new CampaignOfferMail($campaign, $customer));
+        $log = CampaignLog::updateOrCreate(
+            [
+                'campaign_id' => $campaign->id,
+                'customer_id_ref' => $customer->id,
+            ],
+            [
+                'email' => $customer->email,
+                'delivery_status' => 'pending',
+                'error_message' => null,
+            ]
+        );
+
+        try {
+            Mail::to($customer->email)->send(new CampaignOfferMail($campaign, $customer));
+
+            $log->update([
+                'delivery_status' => 'sent',
+                'sent_at' => now(),
+                'error_message' => null,
+            ]);
+
+            $customer->update([
+                'last_recommendation_sent_at' => now(),
+            ]);
+        } catch (\Throwable $e) {
+            $log->update([
+                'delivery_status' => 'failed',
+                'error_message' => $e->getMessage(),
+            ]);
+        }
     }
 }

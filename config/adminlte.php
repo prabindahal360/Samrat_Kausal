@@ -100,88 +100,109 @@ return [
     'password_email_url' => 'forgot-password',
     'profile_url' => false,
 
-    'menu' => [
-        [
-            'text' => 'Dashboard',
-            'route' => 'dashboard',
-            'icon' => 'fas fa-fw fa-tachometer-alt',
-        ],
-        [
-            'text' => 'Customers',
-            'icon' => 'fas fa-fw fa-users',
-            'submenu' => [
-                [
-                    'text' => 'All Customers',
-                    'route' => 'customers.index',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
-                [
-                    'text' => 'Add Customer',
-                    'route' => 'customers.create',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
-                [
-                    'text' => 'Import Customers',
-                    'route' => 'customers.import.form',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
-                [
-                    'text' => 'Import Dataset',
-                    'route' => 'customers.import.form',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
-                [
-                    'text' => 'Invoice Items',
-                    'route' => 'invoice-items.index',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
+'menu' => [
+    [
+        'text' => 'Admin Dashboard',
+        'route' => 'dashboard',
+        'icon' => 'fas fa-fw fa-tachometer-alt',
+        'can' => 'admin-only',
+    ],
+
+    [
+        'text' => 'Customers',
+        'icon' => 'fas fa-fw fa-users',
+        'can' => 'admin-only',
+        'submenu' => [
+            [
+                'text' => 'All Customers',
+                'route' => 'customers.index',
+                'icon' => 'far fa-fw fa-circle',
+            ],
+            [
+                'text' => 'Add Customer',
+                'route' => 'customers.create',
+                'icon' => 'far fa-fw fa-circle',
+            ],
+            [
+                'text' => 'Import Customers',
+                'route' => 'customers.import.form',
+                'icon' => 'far fa-fw fa-circle',
+            ],
+            [
+                'text' => 'Invoice Items',
+                'route' => 'invoice-items.index',
+                'icon' => 'far fa-fw fa-circle',
             ],
         ],
+    ],
 
-        [
-    'text' => 'Products',
-    'icon' => 'fas fa-fw fa-box',
-    'submenu' => [
-        [
-            'text' => 'All Products',
-            'route' => 'products.index',
-            'icon' => 'far fa-fw fa-circle',
+    [
+        'text' => 'Products',
+        'icon' => 'fas fa-fw fa-box',
+        'can' => 'admin-only',
+        'submenu' => [
+            [
+                'text' => 'All Products',
+                'route' => 'products.index',
+                'icon' => 'far fa-fw fa-circle',
+            ],
+            [
+                'text' => 'Add Product',
+                'route' => 'products.create',
+                'icon' => 'far fa-fw fa-circle',
+            ],
         ],
-        [
-            'text' => 'Add Product',
-            'route' => 'products.create',
-            'icon' => 'far fa-fw fa-circle',
+    ],
+
+    [
+        'text' => 'Campaigns',
+        'icon' => 'fas fa-fw fa-envelope',
+        'can' => 'admin-only',
+        'submenu' => [
+            [
+                'text' => 'All Campaigns',
+                'route' => 'campaigns.index',
+                'icon' => 'far fa-fw fa-circle',
+            ],
+            [
+                'text' => 'Create Campaign',
+                'route' => 'campaigns.create',
+                'icon' => 'far fa-fw fa-circle',
+            ],
         ],
+    ],
+
+    [
+        'header' => 'ADMIN',
+        'can' => 'admin-only',
+    ],
+    [
+        'text' => 'Manage Users',
+        'route' => 'admin.users.index',
+        'icon' => 'fas fa-fw fa-user-shield',
+        'can' => 'admin-only',
+    ],
+
+    // User menu
+    [
+        'text' => 'My Dashboard',
+        'route' => 'user.dashboard',
+        'icon' => 'fas fa-fw fa-home',
+        'can' => 'user-only',
+    ],
+    [
+        'text' => 'Products',
+        'route' => 'user.products',
+        'icon' => 'fas fa-fw fa-shopping-bag',
+        'can' => 'user-only',
+    ],
+    [
+        'text' => 'My Profile',
+        'route' => 'user.profile',
+        'icon' => 'fas fa-fw fa-user',
+        'can' => 'user-only',
     ],
 ],
-
-        [
-            'text' => 'Campaigns',
-            'icon' => 'fas fa-fw fa-envelope',
-            'submenu' => [
-                [
-                    'text' => 'All Campaigns',
-                    'route' => 'campaigns.index',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
-                [
-                    'text' => 'Create Campaign',
-                    'route' => 'campaigns.create',
-                    'icon' => 'far fa-fw fa-circle',
-                ],
-            ],
-        ],
-        [
-            'header' => 'ADMIN',
-            'can' => 'admin-only',
-        ],
-        [
-            'text' => 'Manage Users',
-            'route' => 'admin.users.index',
-            'icon' => 'fas fa-fw fa-user-shield',
-            'can' => 'admin-only',
-        ],
-    ],
 
     'filters' => [
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,

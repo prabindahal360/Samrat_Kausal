@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Add Customer')
+@section('title', 'Create Customer')
 
 @section('content_header')
-    <h1>Add Customer</h1>
+    <h1>Create Customer</h1>
 @stop
 
 @section('content')
@@ -14,29 +14,35 @@
             <form action="{{ route('customers.store') }}" method="POST">
                 @csrf
 
-                <div class="form-group">
-                    <label>Customer ID</label>
-                    <input type="text" name="customer_id" value="{{ old('customer_id') }}" class="form-control">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>Customer ID</label>
+                        <input type="text" name="customer_id" class="form-control" value="{{ old('customer_id') }}" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Email</label>
+                        <input type="email" name="email" class="form-control" value="{{ old('email') }}">
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>First Name</label>
+                        <input type="text" name="first_name" class="form-control" value="{{ old('first_name') }}">
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Last Name</label>
+                        <input type="text" name="last_name" class="form-control" value="{{ old('last_name') }}">
+                    </div>
+
+                    <div class="col-md-6 mt-3">
+                        <label>Country</label>
+                        <input type="text" name="country" class="form-control" value="{{ old('country') }}">
+                    </div>
                 </div>
 
-                <div class="form-group mt-3">
-                    <label>Name</label>
-                    <input type="text" name="name" value="{{ old('name') }}" class="form-control">
-                </div>
-
-                <div class="form-group mt-3">
-                    <label>Email</label>
-                    <input type="email" name="email" value="{{ old('email') }}" class="form-control">
-                </div>
-
-                <div class="form-group mt-3">
-                    <label>Country</label>
-                    <input type="text" name="country" value="{{ old('country') }}" class="form-control">
-                </div>
-
-                <button type="submit" class="btn btn-primary mt-3">
-                    Save Customer
-                </button>
+                <button type="submit" class="btn btn-success mt-4">Save Customer</button>
+                <a href="{{ route('customers.index') }}" class="btn btn-secondary mt-4">Back</a>
             </form>
         </div>
     </div>

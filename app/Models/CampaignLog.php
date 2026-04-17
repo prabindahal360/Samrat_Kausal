@@ -9,13 +9,17 @@ class CampaignLog extends Model
 {
     use HasFactory;
 
-     protected $fillable = [
+    protected $fillable = [
         'campaign_id',
         'customer_id_ref',
         'email',
         'delivery_status',
         'sent_at',
         'error_message',
+    ];
+
+    protected $casts = [
+        'sent_at' => 'datetime',
     ];
 
     public function campaign()
